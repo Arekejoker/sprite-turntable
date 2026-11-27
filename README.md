@@ -2,11 +2,10 @@
 
 从一张正面定妆图，生成 360° 全身透明序列，再打包成可在浏览器里拖动旋转、滚轮缩放的离线交互展示页。
 
-<video src="release/兔女郎展示.mp4" controls autoplay loop muted playsinline width="560">
-  <p>如当前平台不支持直接播放仓库内视频，请<a href="release/兔女郎展示.mp4">点此打开或下载展示视频（MP4，1.3 MiB）</a>。</p>
-</video>
+[![角色转身视频预览，点击播放完整版](docs/turntable-preview.webp)](https://cdn.jsdelivr.net/gh/Arekejoker/bunny-showcase@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
 
-- **展示视频（1.3 MiB）**：[release/兔女郎展示.mp4](release/兔女郎展示.mp4)（`1200 × 1200` · `60 fps` · 7 秒）
+[播放完整视频 · 7 秒 · 60 fps](https://cdn.jsdelivr.net/gh/Arekejoker/bunny-showcase@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
+
 - **离线交互页（42.5 MiB）**：从本仓库 **Releases (`v1.0.0`)** 下载 [bunny-showcase.html](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-showcase.html)，用桌面浏览器直接打开即可离线拖动旋转、滚轮缩放
 - **最终透明素材包（31.9 MiB）**：从 **Releases (`v1.0.0`)** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-orbit-72-frames.zip)（72 张 `640 × 1920` 8 位直通透明度 RGBA PNG）
 
