@@ -1,5 +1,7 @@
 # Sprite Turntable · 角色转台
 
+![兔女郎斜倚沙发的横幅封面](docs/github-social-preview.png)
+
 从一张正面定妆图，生成 360° 全身透明序列，再打包成可在浏览器里拖动旋转、滚轮缩放的离线交互展示页。
 
 [![角色转身视频预览，点击播放完整版](docs/turntable-preview.webp)](https://cdn.jsdelivr.net/gh/Arekejoker/sprite-turntable@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
