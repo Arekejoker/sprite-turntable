@@ -1,0 +1,13 @@
+# Reproducible scratch & model caches
+work/
+models/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Large binaries distributed via GitHub Releases (download into these paths when reproducing)
+release/兔女郎展示.html
+release/全身环绕_*.zip
+release/全身环绕_*.mp4
+release/人物边缘_逐帧换底对照.html
+audits/hand-source/inputs/*.mkv

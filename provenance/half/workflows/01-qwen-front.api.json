@@ -1,0 +1,99 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "douyin_bunny_ref.png"
+    }
+  },
+  "5": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "以原图中的年轻女性为主体，重新拍摄一张用于3D建模参考的正面平视全身影棚定妆照。严格保留原图中她的真实面部五官、妆容、黑短发造型、头顶亮面黑色兔耳发箍（保持一立一弯形态）、白色翻领、黑色蝴蝶结、黑色抹胸兔女郎连体衣以及白色手腕袖口。彻底修正原图的强俯拍角度与低头姿态，改为正前方平视中长焦镜头，她完全抬起头、下巴水平放平、双眼平视正前方镜头，脸部轮廓与鼻梁下颌清晰舒展。将半身画面完整扩展为从兔耳顶端到鞋底全部入镜的完整全身站姿，人物居中，兔耳顶端上方与鞋底下方均保留干净留白。采用端正对称的自然轻微A字站姿：双臂自然下垂并略微向外张开，与腰胯留出清晰空隙不粘连；双腿笔直自然站立且微微分开，双腿与双脚清晰分离。按经典兔女郎穿搭补全下半身：双腿穿着细腻均匀的半透明黑色丝袜，自然透出柔和肤色与丝质光泽，脚穿经典亮面黑色尖头细高跟鞋，两只高跟鞋完整清晰可见。将暗色走廊背景彻底替换为干净、均匀、无杂物的纯浅中性灰影棚无缝背景。柔和均匀的影棚人像布光，面部和全身具有清晰自然的三维立体光影过渡，仅在鞋底有极轻的自然落地阴影。高清写实单反摄影质感，全身对焦锐利，无文字，无水印。",
+      "negative_prompt": "",
+      "resolution": 1280,
+      "images.image_1": [
+        "4",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "5",
+        1
+      ],
+      "latent_image": [
+        "5",
+        2
+      ],
+      "seed": 202603,
+      "steps": 30,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "stocking-pull-std/fullbody-levelhead-s202603"
+    }
+  }
+}

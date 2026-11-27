@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人物边缘逐帧换底对照</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;color:var(--foreground,CanvasText);font-family:var(--font-sans,system-ui,sans-serif)}
+main{max-width:880px;margin:auto}
+nav,.transport{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0 0 9px}
+button{font:inherit;font-size:13px;color:inherit;border:1px solid var(--border,GrayText);background:transparent;padding:5px 10px;border-radius:var(--radius,6px);cursor:pointer}
+button[aria-pressed=true]{background:var(--foreground,CanvasText);color:var(--background,Canvas)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ring,Highlight);outline-offset:2px}
+output,figcaption{font-size:13px}
+output{font-variant-numeric:tabular-nums;white-space:nowrap}
+input{min-width:70px;flex:1;accent-color:var(--primary,Highlight)}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+figure{margin:0;min-width:0}figcaption{margin:0 0 5px}
+canvas{display:block;width:100%;height:auto;max-height:405px;object-fit:contain;object-position:top center}
+@media(max-width:460px){button{padding:5px 7px}.panels{gap:5px}figcaption{font-size:12px}}
+</style>
+<main>
+<nav aria-label="放大区域" id="zones"></nav>
+<nav aria-label="合成背景" id="backgrounds"></nav>
+<div class="transport">
+<button id="prev" type="button" aria-label="上一帧">上一帧</button>
+<input id="range" type="range" min="0" max="71" value="32" aria-label="环绕帧序号">
+<button id="next" type="button" aria-label="下一帧">下一帧</button>
+<output id="count" for="range"></output>
+</div>
+<div class="panels">
+<figure><figcaption>原视频 · 灰底</figcaption><canvas id="raw" aria-label="原始灰底帧"></canvas></figure>
+<figure><figcaption id="newLabel">净边后 · 深底</figcaption><canvas id="cut" aria-label="同帧透明人物换底"></canvas></figure>
+</div>
+<output id="error" role="alert"></output>
+</main>
+<script>
+const frames=__ORBIT_FRAMES__;
+const zones=[['hair','发梢'],['ears','兔耳'],['shoulder','肩线'],['hands','手指'],['heels','鞋跟'],['all','全身']];
+const backgrounds=[['dark','深底'],['light','浅底'],['same','同灰底'],['check','棋盘格']];
+const colors={dark:'#1c232d',light:'#f3f0e9',same:'#7e7e7e'};
+const labels=Object.fromEntries(backgrounds);
+const get=id=>document.getElementById(id);
+let frame=Math.min(32,frames.length-1), zone='hair', bg='dark', ticket=0;
+get('range').max=frames.length-1;
+function choices(id,list,select) {
+  return list.map(([value,label])=>{
+    const b=document.createElement('button');
+    b.type='button';b.textContent=label;b.onclick=()=>{select(value);draw()};
+    get(id).append(b);return [b,value];
+  });
+}
+const zButtons=choices('zones',zones,value=>{zone=value});
+const bButtons=choices('backgrounds',backgrounds,value=>{bg=value});
+const cached=new Map();
+function pictures(i) {
+  if(cached.has(i))return cached.get(i);
+  const result=Promise.all(['raw','cut'].map(async key=>{
+    const image=new Image();image.src=frames[i][key];await image.decode();return image;
+  }));
+  if(cached.size>=4)cached.delete(cached.keys().next().value);
+  cached.set(i,result);return result;
+}
+function panel(canvas,image,boxes,backdrop) {
+  const gap=boxes.length>1?8:0;
+  canvas.width=boxes.reduce((s,r)=>s+r[2],0)+gap*(boxes.length-1);
+  canvas.height=Math.max(...boxes.map(r=>r[3]));
+  const ctx=canvas.getContext('2d');
+  if(backdrop==='check'){
+    ctx.fillStyle='#e8e8e8';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#999fa4';
+    for(let y=0;y<canvas.height;y+=16)for(let x=16*((y/16)%2);x<canvas.width;x+=32)ctx.fillRect(x,y,16,16);
+  } else {
+    ctx.fillStyle=colors[backdrop];ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+  let x=0;
+  for(const [sx,sy,w,h] of boxes){ctx.drawImage(image,sx,sy,w,h,x,0,w,h);x+=w+gap;}
+}
+async function draw(){
+  const turn=++ticket;
+  const current=frame;
+  get('range').value=current;get('count').value=(current+1)+' / '+frames.length;
+  for(const [button,value] of zButtons)button.setAttribute('aria-pressed',String(zone===value));
+  for(const [button,value] of bButtons)button.setAttribute('aria-pressed',String(bg===value));
+  try{
+    const [raw,cut]=await pictures(current);
+    if(turn!==ticket)return;
+    const boxes=frames[current].boxes[zone];
+    panel(get('raw'),raw,boxes,'same');panel(get('cut'),cut,boxes,bg);
+    get('newLabel').textContent='净边后 · '+labels[bg];
+    document.querySelector('main').dataset.ready=[current,zone,bg].join('/');
+  }catch(err){if(turn===ticket)get('error').value='这两张图未能解码。请重新打开离线文件。';}
+}
+get('prev').onclick=()=>{frame=(frame+frames.length-1)%frames.length;draw()};
+get('next').onclick=()=>{frame=(frame+1)%frames.length;draw()};
+get('range').oninput=e=>{frame=Number(e.target.value);draw()};
+draw();
+</script>
+</html>

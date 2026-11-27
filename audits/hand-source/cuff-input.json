@@ -1,0 +1,24 @@
+{
+  "design_alpha_pixels_changed": 885,
+  "condition_rgb_pixels_changed": 1383,
+  "condition_change_bounds_xyxy": [
+    152,
+    943,
+    476,
+    1015
+  ],
+  "front_fingertip_boxes_identical": [
+    [
+      99,
+      1016,
+      178,
+      1107
+    ],
+    [
+      465,
+      1024,
+      553,
+      1121
+    ]
+  ]
+}

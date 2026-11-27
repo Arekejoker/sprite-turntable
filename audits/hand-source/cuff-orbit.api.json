@@ -1,0 +1,149 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "minimax_h3_fl2va_pruned_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "type": "minimax"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "sprite-360-fullbody-hand-review/fullbody-cuffs-grey.png"
+    }
+  },
+  "5": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "lora_name": "minimax_h3_flf2v_orbit_lora_v1.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "10": {
+    "class_type": "MiniMaxH3ImageToVideo",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "One frozen instant. Only the camera moves. In one continuous full 360 degree orbit around the same motionless woman, from front to profile to her back to the opposite profile and back to front. Show her entire body from the tips of her asymmetrical black bunny ears to the soles of both high heels in every frame, with grey space above and below. Preserve the exact reference stance, proportions, outfit and silhouette. Her head is fixed to her shoulders, eyes open with a fixed gaze relative to her head. Her arms, hands, hips, knees, ankles and feet hold exactly the same world-space pose, like a rigid statue. Each shoe stays planted at its original contact point. Hair, ears and clothes remain still. Camera parallax is the only source of apparent movement. Level camera, constant height, radius and speed, constant soft lighting, solid neutral grey studio background. No cuts, zoom, blinking, head turning, walking, shifting weight or repositioning limbs. Both hands rest at the sides in the relaxed, gently curled finger pose of the first frame. Their two wrists keep their original alignment with the forearms, with a single fitted white cuff on each. The five naturally tapered fingers on each hand keep the same joint angles and spacing as the photographed front reference, including the thumb. Finger overlap changes only with the viewing angle. The elbows and wrists stay fixed relative to the hips throughout the shot. The shoe tips, heels, and both feet stay fixed on the studio floor.",
+      "width": 640,
+      "height": 1920,
+      "length": 73,
+      "first_frame": [
+        "4",
+        0
+      ],
+      "last_frame": [
+        "4",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "res_multistep"
+    }
+  },
+  "12": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "model": [
+        "5",
+        0
+      ],
+      "scheduler": "simple",
+      "steps": 28,
+      "denoise": 1.0
+    }
+  },
+  "13": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 20251017
+    }
+  },
+  "14": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "model": [
+        "5",
+        0
+      ],
+      "conditioning": [
+        "10",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "13",
+        0
+      ],
+      "guider": [
+        "14",
+        0
+      ],
+      "sampler": [
+        "11",
+        0
+      ],
+      "sigmas": [
+        "12",
+        0
+      ],
+      "latent_image": [
+        "10",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "15",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "17": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "16",
+        0
+      ],
+      "filename_prefix": "sprite-360-fullbody-hand-review/cuff-source"
+    }
+  }
+}

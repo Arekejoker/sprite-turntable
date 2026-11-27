@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>兔女郎展示</title>
+<style>
+* {box-sizing:border-box}
+html,body {width:100%;height:100%;margin:0;overflow:hidden}
+body {background:radial-gradient(circle at 50% 40%,#2d333d 0%,#16191f 74%);font:14px system-ui,sans-serif;color:#eef2f7}
+canvas {position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas:active {cursor:grabbing}
+.hud {position:absolute;left:50%;bottom:17px;transform:translateX(-50%);width:min(58%,560px);
+  border:1px solid #ffffff20;border-radius:10px;background:#12151aee;box-shadow:0 3px 12px #0002;
+  padding:8px 17px 5px;display:grid;align-items:center;grid-template-columns:1.38fr 1fr;gap:19px}
+.control {display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:8px}
+.control+.control {border-left:1px solid #ffffff20;padding-left:18px}
+label {font-size:13px;color:#c8cdd4} output {font-size:13px;font-variant-numeric:tabular-nums;color:#f1f4f7}
+input {appearance:none;width:100%;height:19px;margin:0;grid-column:span 2;background:transparent;cursor:pointer}
+input::-webkit-slider-runnable-track {height:3px;border-radius:2px;background:linear-gradient(90deg,#70dfbc var(--fill),#4a505b var(--fill))}
+input::-webkit-slider-thumb {appearance:none;width:12px;height:12px;margin-top:-4.5px;border-radius:100%;background:#8be9ca}
+input:focus-visible {outline:2px solid #8be9ca;outline-offset:2px}
+#touch {position:fixed;left:0;top:0;width:25px;height:25px;margin:-12.5px;opacity:0;pointer-events:none;
+  border:2px solid #ffffffdf;background:#ffffff39;border-radius:50%;box-shadow:0 3px 11px #0006}
+#touch.pressed {background:#6ee7b760;border-color:#89f2cd;box-shadow:0 0 0 5px #6ee7b72c,0 3px 11px #0006}
+body.light {background:radial-gradient(circle at 50% 38%,#f7f5f0 0%,#e4e0d9 80%)}
+.light .hud {background:#faf8f3ef;border-color:#c7c2b9;box-shadow:0 3px 12px #584f410e}
+.light .control+.control {border-color:#d6d0c6}
+.light label {color:#494a47}
+.light output {color:#262925}
+.light input::-webkit-slider-runnable-track {background:linear-gradient(90deg,#36715e var(--fill),#b7b9b2 var(--fill))}
+.light input::-webkit-slider-thumb {background:#326d58}
+</style>
+<canvas id="stage" aria-label="可拖动的全身环绕"></canvas>
+<div class="hud">
+  <div class="control"><label for="yaw">水平视角</label><output id="angle" for="yaw">正面</output>
+    <input id="yaw" type="range" min="-180" max="180" step="1" value="0"></div>
+  <div class="control"><label for="zoom">缩放</label><output id="scale" for="zoom">1.00×</output>
+    <input id="zoom" type="range" min="1" max="2" step="0.01" value="1"></div>
+</div>
+<div id="touch" aria-hidden="true"></div>
+<script>
+const get=id=>document.getElementById(id);
+const stage=get('stage'), pen=stage.getContext('2d'), yawInput=get('yaw'), zoomInput=get('zoom');
+const embedded=document.getElementById('orbit-frames');
+const background=new URLSearchParams(location.search).get('background') || (embedded?'light':'dark');
+document.body.classList.toggle('light',background==='light');
+const portraitFirst=location.hash==='#portrait-first';
+const zoomLimit=portraitFirst?2.60:Number(zoomInput.max);
+zoomInput.max=zoomLimit;
+let yaw=0, zoom=1, lastX=null, images=[];
+// The two H3 orbits turn at different rates. Match the reference's visible profiles,
+// then select the nearest single PNG on the intervening and closing arcs.
+const angleMap=[[0,0],[65,16],[90,19],[180,36],[270,48],[290,51],[360,72]];
+function viewAtYaw(angle){
+  const sourceAngle=((-angle%360)+360)%360;
+  for(let i=1;i<angleMap.length;i++){
+    const [a,u]=angleMap[i-1], [b,v]=angleMap[i];
+    if(sourceAngle<=b)return Math.round(u+(v-u)*(sourceAngle-a)/(b-a))%72;
+  }
+}
+function draw(){
+  if(!images.length)return;
+  const w=stage.width,h=stage.height,pixelRatio=w/stage.clientWidth;
+  const view=viewAtYaw(yaw);
+  const frame=images[view];
+  const base=(h-92*pixelRatio)/frame.naturalHeight, scale=base*zoom;
+  // In the opening portrait, keep the face centred as the long ears extend to the right.
+  const x=(w-frame.naturalWidth*scale)/2-(portraitFirst?(zoom-1)*base*35:0);
+  const y=10*pixelRatio+(1-zoom)*base*105;
+  pen.clearRect(0,0,w,h);
+  pen.imageSmoothingEnabled=true;pen.imageSmoothingQuality='high';
+  pen.drawImage(frame,x,y,frame.naturalWidth*scale,frame.naturalHeight*scale);
+  let wrapped=((yaw+180)%360+360)%360-180;
+  if(wrapped===-180&&yaw===180)wrapped=180;
+  const snapped=Math.round(wrapped/5)*5;
+  yawInput.value=snapped;zoomInput.value=zoom;
+  yawInput.style.setProperty('--fill',(100*(snapped+180)/360)+'%');
+  zoomInput.style.setProperty('--fill',(100*(zoom-1)/(zoomLimit-1))+'%');
+  if(portraitFirst){
+    const reveal=Math.max(0,Math.min(1,(1.70-zoom)/0.55));
+    document.querySelector('.hud').style.opacity=reveal*reveal*(3-2*reveal);
+  }
+  get('angle').value=!snapped?'正面':Math.abs(snapped)===180?'背面':(snapped<0?'左':'右')+Math.abs(snapped)+'°';
+  get('scale').value=zoom.toFixed(2)+'×';
+  window.captureState={view,yaw,snapped,zoom,x,y,scale};
+}
+function resize(){stage.width=Math.round(stage.clientWidth*devicePixelRatio);stage.height=Math.round(stage.clientHeight*devicePixelRatio);draw()}
+yawInput.addEventListener('input',()=>{yaw=Number(yawInput.value);draw()});
+zoomInput.addEventListener('input',()=>{zoom=Number(zoomInput.value);draw()});
+stage.addEventListener('pointerdown',e=>{lastX=e.clientX;stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{
+  if(lastX===null)return;
+  yaw+=(e.clientX-lastX)*300/stage.clientWidth;lastX=e.clientX;draw();
+});
+stage.addEventListener('lostpointercapture',()=>{lastX=null});
+stage.addEventListener('wheel',e=>{
+  e.preventDefault();zoom=Math.min(zoomLimit,Math.max(1,zoom*Math.exp(-0.0015*e.deltaY)));draw();
+},{passive:false});
+// A continuous, unwrapped angle lets the recorded camera cross the rear view in one direction.
+window.setCamera=(angle,magnification)=>{
+  yaw=angle;zoom=Math.max(1,Math.min(zoomLimit,magnification));draw();return window.captureState;
+};
+window.addEventListener('resize',resize);
+// Decoding the translucent PNGs as images preserves premultiplied-alpha filtering at the silhouette.
+window.ready=(async()=>{
+  const frames=embedded?JSON.parse(embedded.textContent):null;
+  for(let i=0;i<72;i++){
+    const im=new Image();
+    im.src=frames?frames[i]:'orbit_'+String(i).padStart(3,'0')+'.png';
+    await im.decode();
+    images.push(im);
+  }
+  resize();
+})();
+</script>
+</html>

@@ -1,0 +1,79 @@
+[
+  {
+    "stage": "Qwen-Image 2.1",
+    "root": "comfyui",
+    "path": "diffusion_models/qwen_image_2.1_int8_convrot.safetensors",
+    "bytes": 7256783064,
+    "sha256": "cb74113cb03faecd79611b01fd7fd642f0aa60d6f0b95086abee214d75eaa57d"
+  },
+  {
+    "stage": "Qwen-Image 2.1",
+    "root": "comfyui",
+    "path": "text_encoders/qwen3vl_8b_int8_convrot.safetensors",
+    "bytes": 9350798360,
+    "sha256": "8bfd0f6e12abf2d2d697ecc888e5e90b0d6741d6708f05799f53afa560452e8f"
+  },
+  {
+    "stage": "Qwen-Image 2.1",
+    "root": "comfyui",
+    "path": "vae/qwen_image_2.1_vae_bf16.safetensors",
+    "bytes": 675509688,
+    "sha256": "bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9"
+  },
+  {
+    "stage": "MiniMax H3",
+    "root": "comfyui",
+    "path": "diffusion_models/minimax_h3_fl2va_pruned_fp8_scaled.safetensors",
+    "bytes": 20958205608,
+    "sha256": "12944c1f7791637e7de12208aef04da82bd26b95271b1b47d817364315ade993"
+  },
+  {
+    "stage": "MiniMax H3",
+    "root": "comfyui",
+    "path": "text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "bytes": 15687142551,
+    "sha256": "35a88d51044231fe332301d7a62aa81e3f2cba62febeb446e2c1e3e0ef76f2c6"
+  },
+  {
+    "stage": "MiniMax H3",
+    "root": "comfyui",
+    "path": "vae/minimax_h3_video_vae_fp16.safetensors",
+    "bytes": 5207808496,
+    "sha256": "7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522"
+  },
+  {
+    "stage": "MiniMax H3",
+    "root": "comfyui",
+    "path": "loras/minimax_h3_flf2v_orbit_lora_v1.safetensors",
+    "bytes": 155111424,
+    "sha256": "14f13e3effaf3e729fdc0c97680344aa63f473be0c55963f963d718b3db2a4d4"
+  },
+  {
+    "stage": "SeedVR2",
+    "root": "comfyui",
+    "path": "diffusion_models/seedvr2_7b_fp8_e4m3fn.safetensors",
+    "bytes": 8240979248,
+    "sha256": "5065e77d647dd553d9090a81e20d6de590d931a61df79d785e008433926ee418"
+  },
+  {
+    "stage": "SeedVR2",
+    "root": "comfyui",
+    "path": "vae/seedvr2_ema_vae_fp16.safetensors",
+    "bytes": 501324814,
+    "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1"
+  },
+  {
+    "stage": "SAM 2.1",
+    "root": "sam2",
+    "path": "sam2.1_hiera_tiny.pt",
+    "bytes": 156008466,
+    "sha256": "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69"
+  },
+  {
+    "stage": "Depth Pro",
+    "root": "depth_pro",
+    "path": "depth_pro.pt",
+    "bytes": 1904446787,
+    "sha256": "3eb35ca68168ad3d14cb150f8947a4edf85589941661fdb2686259c80685c0ce"
+  }
+]

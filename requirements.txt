@@ -1,0 +1,12 @@
+# Exporting the offline HTML (tools/export_html.py) requires Python 3 stdlib only.
+# Install these packages if you want to re-run matting, contour refinement, or ComfyUI submission:
+numpy>=2.0
+scipy>=1.14
+pillow>=11.0
+opencv-python-headless>=4.10
+requests>=2.32
+
+# Optional GPU dependencies for re-running SAM 2.1 tracking (edge-matte/track.py) or pose landmarks:
+# torch (install CUDA wheel matching your GPU)
+# sam2 (https://github.com/facebookresearch/sam2)
+# mediapipe>=0.10
