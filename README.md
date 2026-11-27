@@ -1,22 +1,22 @@
-# 兔女郎展示
+# Sprite Turntable · 角色转台
 
 从一张正面定妆图，生成 360° 全身透明序列，再打包成可在浏览器里拖动旋转、滚轮缩放的离线交互展示页。
 
-[![角色转身视频预览，点击播放完整版](docs/turntable-preview.webp)](https://cdn.jsdelivr.net/gh/Arekejoker/bunny-showcase@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
+[![角色转身视频预览，点击播放完整版](docs/turntable-preview.webp)](https://cdn.jsdelivr.net/gh/Arekejoker/sprite-turntable@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
 
-[播放完整视频 · 7 秒 · 60 fps](https://cdn.jsdelivr.net/gh/Arekejoker/bunny-showcase@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
+[播放完整视频 · 7 秒 · 60 fps](https://cdn.jsdelivr.net/gh/Arekejoker/sprite-turntable@v1.0.0/release/%E5%85%94%E5%A5%B3%E9%83%8E%E5%B1%95%E7%A4%BA.mp4)
 
-- **离线交互页（42.5 MiB）**：从本仓库 **Releases (`v1.0.0`)** 下载 [bunny-showcase.html](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-showcase.html)，用桌面浏览器直接打开即可离线拖动旋转、滚轮缩放
-- **最终透明素材包（31.9 MiB）**：从 **Releases (`v1.0.0`)** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-orbit-72-frames.zip)（72 张 `640 × 1920` 8 位直通透明度 RGBA PNG）
+- **离线交互页（42.5 MiB）**：从本仓库 **Releases (`v1.0.0`)** 下载 [bunny-showcase.html](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-showcase.html)，用桌面浏览器直接打开即可离线拖动旋转、滚轮缩放
+- **最终透明素材包（31.9 MiB）**：从 **Releases (`v1.0.0`)** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-orbit-72-frames.zip)（72 张 `640 × 1920` 8 位直通透明度 RGBA PNG）
 
 ---
 
 ## 直接使用
 
-1. **浏览器离线体验**：在 **Releases** 下载 [bunny-showcase.html](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-showcase.html) 并用桌面浏览器打开。单文件已内嵌全部 72 张原分辨率透明 PNG、样式与交互逻辑，完全离线运行。
+1. **浏览器离线体验**：在 **Releases** 下载 [bunny-showcase.html](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-showcase.html) 并用桌面浏览器打开。单文件已内嵌全部 72 张原分辨率透明 PNG、样式与交互逻辑，完全离线运行。
    - **左右拖动画面**或拖动底部「水平视角」滑杆：以正面（`0°`）为中心左右旋转一整圈（左滑左转、右滑右转）。
    - **鼠标滚轮**或拖动底部「缩放」滑杆：在 `1.00×`～`2.00×` 之间平滑缩放。
-2. **二次开发与合成**：在 **Releases** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-orbit-72-frames.zip)，可直接导入自己的网页、游戏引擎或后期合成工程。
+2. **二次开发与合成**：在 **Releases** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-orbit-72-frames.zip)，可直接导入自己的网页、游戏引擎或后期合成工程。
 
 ---
 
@@ -120,7 +120,7 @@ python3 edge-matte/front_arm.py
 
 ## 生成单文件离线 HTML
 
-从 **Releases** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/bunny-showcase/releases/download/v1.0.0/bunny-orbit-72-frames.zip) 并保存为 `release/全身环绕_正面手臂精修_72帧.zip`（或完成上面的第 4 步）后，在仓库根目录执行（仅需 Python 3 标准库）：
+从 **Releases** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-orbit-72-frames.zip) 并保存为 `release/全身环绕_正面手臂精修_72帧.zip`（或完成上面的第 4 步）后，在仓库根目录执行（仅需 Python 3 标准库）：
 
 ```bash
 python3 tools/export_html.py
