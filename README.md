@@ -9,6 +9,8 @@
 - **离线交互页（42.5 MiB）**：从本仓库 **Releases (`v1.0.0`)** 下载 [bunny-showcase.html](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-showcase.html)，用桌面浏览器直接打开即可离线拖动旋转、滚轮缩放
 - **最终透明素材包（31.9 MiB）**：从 **Releases (`v1.0.0`)** 下载 [bunny-orbit-72-frames.zip](https://github.com/Arekejoker/sprite-turntable/releases/download/v1.0.0/bunny-orbit-72-frames.zip)（72 张 `640 × 1920` 8 位直通透明度 RGBA PNG）
 
+用 AI 助手阅读或修改工程时，可以从 [AGENTS.md](AGENTS.md) 开始。里面列出了每个制作环节的输入、源码和产物，也说明了助手怎样邀请你在自己的浏览器里体验转台。
+
 ---
 
 ## 直接使用
